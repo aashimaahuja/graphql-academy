@@ -1,0 +1,24 @@
+type Query {
+  courses: [Course!]!
+  instructor(id: ID!): Instructor
+  course(id: ID!): Course
+}
+
+type Instructor {
+  id: ID!
+  name: String
+  bio: String
+  courses_taught: Int
+  courses: [Course!]
+}
+
+type Course {
+  id: ID!
+  title: String!
+  description: String
+  duration: Int
+  level: String
+  price: Float
+  category: String
+  instructor: Instructor!
+}

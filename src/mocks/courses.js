@@ -1,0 +1,111 @@
+export const courses = [
+  {
+    id: 1,
+    title: "Introduction to Python",
+    description:
+      "Learn the basics of Python programming including variables, data types, and control structures.",
+    instructor: "John Doe",
+    duration: "10 hours",
+    level: "Beginner",
+    price: 49.99,
+    category: "Programming",
+  },
+  {
+    id: 2,
+    title: "Web Development with HTML, CSS & JavaScript",
+    description:
+      "A comprehensive course on front-end web development technologies.",
+    instructor: "Jane Smith",
+    duration: "20 hours",
+    level: "Intermediate",
+    price: 99.99,
+    category: "Web Development",
+  },
+  {
+    id: 3,
+    title: "Data Science & Machine Learning",
+    description:
+      "Learn the fundamentals of data science and machine learning using Python and popular libraries.",
+    instructor: "Emily Johnson",
+    duration: "35 hours",
+    level: "Advanced",
+    price: 149.99,
+    category: "Data Science",
+  },
+  {
+    id: 4,
+    title: "UI/UX Design Bootcamp",
+    description:
+      "Master the principles of UI/UX design and learn to create intuitive user experiences.",
+    instructor: "Michael Brown",
+    duration: "25 hours",
+    level: "All Levels",
+    price: 129.99,
+    category: "Design",
+  },
+  {
+    id: 5,
+    title: "JavaScript Essentials",
+    description:
+      "Master the fundamentals of JavaScript programming for web development.",
+    instructor: "Sarah Wilson",
+    duration: "15 hours",
+    level: "Beginner",
+    price: 59.99,
+    category: "Programming",
+  },
+  {
+    id: 6,
+    title: "Project Management Fundamentals",
+    description:
+      "Learn the core principles of project management and agile methodologies.",
+    instructor: "Daniel Martinez",
+    duration: "12 hours",
+    level: "Beginner",
+    price: 69.99,
+    category: "Business",
+  },
+  //   {
+  //     id: 7,
+  //     title: "Full Stack Web Development",
+  //     description:
+  //       "Become a full stack web developer with skills in both front-end and back-end technologies.",
+  //     instructor: "Ava Taylor",
+  //     duration: "40 hours",
+  //     level: "Advanced",
+  //     price: 199.99,
+  //     category: "Web Development",
+  //   },
+  //   {
+  //     id: 8,
+  //     title: "Digital Marketing Masterclass",
+  //     description:
+  //       "Learn digital marketing strategies including SEO, content marketing, and social media advertising.",
+  //     instructor: "James White",
+  //     duration: "18 hours",
+  //     level: "Intermediate",
+  //     price: 79.99,
+  //     category: "Marketing",
+  //   },
+  //   {
+  //     id: 9,
+  //     title: "Artificial Intelligence for Beginners",
+  //     description: "An introduction to AI concepts and algorithms using Python.",
+  //     instructor: "Sophia Davis",
+  //     duration: "30 hours",
+  //     level: "Beginner",
+  //     price: 89.99,
+  //     category: "Artificial Intelligence",
+  //   },
+  //   {
+  //     id: 10,
+  //     title: "Advanced Excel for Data Analysis",
+  //     description:
+  //       "Master advanced Excel techniques for data analysis and visualization.",
+  //     instructor: "David Lee",
+  //     duration: "8 hours",
+  //     level: "Advanced",
+  //     price: 39.99,
+  //     category: "Data Analysis",
+  //   },
+];
