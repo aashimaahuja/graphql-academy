@@ -4,11 +4,11 @@ import { generateId } from "./ids.js";
 const getCourseTable = () => connection.table("courses");
 
 export async function countCourses() {
-  const { count } = await getCourseTable().first().count("* as count");
-  return count;
+  const { count } = await getCourseTable().first().count("*", { as: "count" });
+  return count as number;
 }
 
-export async function getCourses(limit, offset) {
+export async function getCourses(limit?: number, offset?: number) {
   const query = getCourseTable().select();
   if (limit) {
     query.limit(limit);
