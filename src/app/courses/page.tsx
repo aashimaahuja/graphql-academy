@@ -1,10 +1,9 @@
 "use client";
 
-import { ListGroup } from "flowbite-react";
-import { courses } from "../../mocks/courses";
-import { Button } from "flowbite-react";
+import { Button, ListGroup } from "flowbite-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { courses } from "../../mocks/courses";
 
 export default function Courses() {
   const router = useRouter();
@@ -13,11 +12,13 @@ export default function Courses() {
     router.push(`/courses/${courseId}`);
   };
   return (
-    <main className="min-h-screen min-w-screen bg-white p-10">
+    <>
       <div className="flex justify-between mb-4">
-        <h2 className="font-semibold mb-4">Courses</h2>
+        <h2 className="font-semibold mb-4 text-xl">Courses</h2>
         <Link href="/courses/create">
-          <Button color="blue">Add course</Button>
+          <Button color="blue" className="flex">
+            Add course
+          </Button>
         </Link>
       </div>
       <div className="flex justify-center">
@@ -37,6 +38,6 @@ export default function Courses() {
           ))}
         </ListGroup>
       </div>
-    </main>
+    </>
   );
 }

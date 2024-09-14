@@ -1,7 +1,5 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware as apolloMiddleware } from "@apollo/server/express4";
-// import { startStandaloneServer } from "@apollo/server/standalone";
-// import { getCourse } from "./db/courses.js";
 import { resolvers } from "./resolvers.js";
 import { readFile } from "node:fs/promises";
 import { createInstructorLoader } from "./db/instructors.js";
@@ -16,34 +14,8 @@ const typeDefs = await readFile("./schema.graphql", "utf8");
 async function getContext() {
   const instructorLoader = createInstructorLoader();
   const context = { instructorLoader };
-  // if (req.auth) {
-  //   context.user = await getUser(req.auth.sub);
-  // }
   return context;
 }
-
-// const typeDefs = `#graphql
-//     type Query {
-//         # greeting: String;
-//         course: {
-//           id: String
-//           title: String
-//         }
-//     }
-// `;
-
-// const resolvers = {
-//   Query: {
-//     // greeting: () => "Hello aashi",
-//     // course: async (_root, { id }) => {
-//     //   const course = await getCourse(id);
-//     //   if (!course) {
-//     //     throw notFoundError("No course found with id " + id);
-//     //   }
-//     //   return course;
-//     // },
-//   },
-// };
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
 await apolloServer.start();
@@ -53,5 +25,3 @@ app.listen({ port: PORT }, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`GraphQL endpoint: http://localhost:${PORT}/graphql`);
 });
-// const { url } = await startStandaloneServer(server, { listen: { port: 9000 } });
-// console.log(`server running at ${url}`);
