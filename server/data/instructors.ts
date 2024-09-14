@@ -1,8 +1,12 @@
 import DataLoader from "dataloader";
-import { connection } from "./connection";
-import { Instructor } from "@/types/Instructor";
+import { connection } from "./connection.js";
 
 const getInstructorTable = () => connection.table("instructors");
+
+export async function getInstructors() {
+  const query = getInstructorTable().select();
+  return await query;
+}
 
 export async function getInstructor(id: string) {
   return await getInstructorTable().first().where({ id });
