@@ -2,7 +2,7 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware as apolloMiddleware } from "@apollo/server/express4";
 import { resolvers } from "./resolvers.js";
 import { readFile } from "node:fs/promises";
-import { createInstructorLoader } from "./db/instructors.js";
+import { createInstructorLoader } from "./data/instructors.js";
 import express from "express";
 
 const PORT = 9000;
