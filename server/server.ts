@@ -1,13 +1,14 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware as apolloMiddleware } from "@apollo/server/express4";
-import { resolvers } from "./resolvers";
+import { resolvers } from "./resolvers.js";
 import { readFile } from "node:fs/promises";
-import { createInstructorLoader } from "./data/instructors";
+import { createInstructorLoader } from "./data/instructors.js";
 import express from "express";
+import cors from "cors";
 
 const PORT = 9000;
 const app = express();
-app.use(express.json());
+app.use(cors(), express.json());
 
 (async () => {
   const typeDefs = await readFile("./schema.graphql", "utf8");
