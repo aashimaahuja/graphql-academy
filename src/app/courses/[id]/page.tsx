@@ -12,7 +12,7 @@ export default function CourseDetails() {
   const params = useParams();
   const { id } = params;
   const course = useMemo(() => {
-    return courses.find((course) => course.id === parseInt(id.toString()));
+    return courses.find((course) => course.id === id.toString());
   }, [id]);
 
   if (!course) {
