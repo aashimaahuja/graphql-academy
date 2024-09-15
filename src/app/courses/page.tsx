@@ -1,12 +1,37 @@
 "use client";
 
+import { getCourses } from "@/lib/graphql/queries";
 import { Button, ListGroup } from "flowbite-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { courses } from "../../mocks/courses";
+import { useEffect, useState } from "react";
 
 export default function Courses() {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const coursesData = await getCourses();
+        setCourses(coursesData);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Data unavailable</div>;
+  }
 
   const handleClick = (courseId) => {
     router.push(`/courses/${courseId}`);

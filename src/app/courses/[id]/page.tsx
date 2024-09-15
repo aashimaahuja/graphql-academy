@@ -1,21 +1,45 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Button } from "flowbite-react";
-import { courses } from "../../../mocks/courses";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Error from "@/components/Error";
+import { deleteCourse, getCourse } from "@/lib/graphql/queries";
+import { Course } from "@/types/Course";
 import CourseDetailItem from "@/components/CourseDetailsItem";
 
 export default function CourseDetails() {
   const params = useParams();
+  const router = useRouter();
   const { id } = params;
-  const course = useMemo(() => {
-    return courses.find((course) => course.id === id.toString());
+  const [course, setCourse] = useState<Course>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getCourse(id.toString())
+      .then((course) => {
+        setCourse(course);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [id]);
 
-  if (!course) {
+  const handleDelete = async () => {
+    await deleteCourse(id);
+    router.push("/courses");
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
     return <Error />;
   }
 
@@ -60,7 +84,7 @@ export default function CourseDetails() {
               Edit course
             </Button>
           </Link>
-          <Button color="gray" className="w-fit">
+          <Button color="gray" className="w-fit" onClick={handleDelete}>
             Delete course
           </Button>
         </footer>

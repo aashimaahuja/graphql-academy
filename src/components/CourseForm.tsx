@@ -8,18 +8,46 @@ import {
   Textarea,
   TextInput,
 } from "flowbite-react";
-import { useMemo, useState } from "react";
-import instructors from "../mocks/instructors";
+import { useEffect, useMemo, useState } from "react";
+import { addCourse, getInstructors, updateCourse } from "@/lib/graphql/queries";
+import { Course } from "@/types/Course";
+import { useRouter } from "next/navigation";
+import { CourseFormType } from "@/types/CourseForm";
 
-export const CourseForm = ({ initialCourseDetails }) => {
+interface CourseFormProps {
+  initialCourseDetails?: Course;
+}
+
+export const CourseForm = ({ initialCourseDetails }: CourseFormProps) => {
+  const [instructors, setInstructors] = useState([]);
+  const router = useRouter();
+
+  const [form, setForm] = useState<CourseFormType>({
+    title: initialCourseDetails.title,
+    description: initialCourseDetails.description,
+    instructorId: initialCourseDetails.instructor.id,
+    duration: initialCourseDetails.duration,
+    price: initialCourseDetails.price,
+    level: initialCourseDetails.level,
+    category: initialCourseDetails.category,
+  });
+
+  useEffect(() => {
+    getInstructors().then((instructors) => {
+      setInstructors(instructors);
+      setForm({
+        ...form,
+        instructorId: form.instructorId ?? instructors[0].id,
+      });
+    });
+  }, []);
+
   const instructorOptions = useMemo(() => {
     return instructors.map((instructor) => ({
       value: instructor.id,
       label: instructor.name,
     }));
-  }, []);
-
-  const [form, setForm] = useState(initialCourseDetails);
+  }, [instructors]);
 
   const onChange = (e) => {
     const { id, value } = e.target;
@@ -31,9 +59,15 @@ export const CourseForm = ({ initialCourseDetails }) => {
     setForm({ ...form, [id]: value });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+    if (initialCourseDetails.id) {
+      const data = await updateCourse(initialCourseDetails.id, form);
+      router.push(`/courses/${data.id}`);
+      return;
+    }
+    const data = await addCourse(form);
+    router.push(`/courses/${data.id}`);
   };
 
   return (
