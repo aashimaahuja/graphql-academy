@@ -59,12 +59,11 @@ export async function deleteCourse(id) {
   return course;
 }
 
-export async function updateCourse({ id, title, description }) {
+export async function updateCourse(id, updatedFields) {
   const course = await getCourseTable().first().where({ id });
   if (!course) {
     return null;
   }
-  const updatedFields = { title, description };
   await getCourseTable().update(updatedFields).where({ id });
   return { ...course, ...updatedFields };
 }

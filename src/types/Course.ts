@@ -1,12 +1,14 @@
+import { Instructor } from "./Instructor";
+
 type Course = {
-  id: number;
+  id: string;
   title: string;
-  description: string;
-  instructor: string;
-  duration: string;
-  level: string;
-  price: number;
-  category: string;
+  description?: string;
+  instructor?: Instructor;
+  duration?: number;
+  level?: string;
+  price?: number;
+  category?: string;
 };
 
 export type { Course };
