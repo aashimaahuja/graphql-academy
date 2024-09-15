@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
+import { gql } from "@/generated";
 
-const courseDetailsFragment = gql`
+const courseDetailsFragment = gql(`
   fragment CourseDetail on Course {
     id
     title
@@ -15,9 +15,9 @@ const courseDetailsFragment = gql`
       bio
     }
   }
-`;
+`);
 
-export const GET_COURSES = gql`
+export const GET_COURSES = gql(`
   query Courses {
     courses {
       id
@@ -25,18 +25,17 @@ export const GET_COURSES = gql`
       description
     }
   }
-`;
+`);
 
-export const GET_COURSE = gql`
+export const GET_COURSE = gql(`
   query Course($id: ID!) {
     course(id: $id) {
       ...CourseDetail
     }
   }
-  ${courseDetailsFragment}
-`;
+`);
 
-export const GET_INSTRUCTORS = gql`
+export const GET_INSTRUCTORS = gql(`
   query Instructors {
     instructors {
       id
@@ -44,29 +43,28 @@ export const GET_INSTRUCTORS = gql`
       bio
     }
   }
-`;
+`);
 
-export const ADD_COURSE_MUTATION = gql`
+export const ADD_COURSE_MUTATION = gql(`
   mutation AddCourse($input: addCourseInput!) {
     course: addCourse(input: $input) {
       ...CourseDetail
     }
   }
-  ${courseDetailsFragment}
-`;
+`);
 
-export const DELETE_COURSE_MUTATION = gql`
+export const DELETE_COURSE_MUTATION = gql(`
   mutation DeleteCourse($id: ID!) {
     course: deleteCourse(id: $id) {
       id
     }
   }
-`;
+`);
 
-export const UPDATE_COURSE_MUTATION = gql`
+export const UPDATE_COURSE_MUTATION = gql(`
   mutation UpdateCourse($id: ID!, $input: updateCourseInput!) {
     course: updateCourse(id: $id, input: $input) {
       id
     }
   }
-`;
+`);

@@ -1,5 +1,6 @@
 "use client";
 
+import { CoursesQuery } from "@/generated/graphql";
 import { GET_COURSES } from "@/lib/graphql/queries";
 import { useQuery } from "@apollo/client";
 import { Button, ListGroup } from "flowbite-react";
@@ -8,7 +9,7 @@ import { useRouter } from "next/navigation";
 
 export default function Courses() {
   const router = useRouter();
-  const { loading, data, error } = useQuery(GET_COURSES, {
+  const { loading, data, error } = useQuery<CoursesQuery>(GET_COURSES, {
     fetchPolicy: "network-only",
   });
   const courses = data?.courses ?? [];

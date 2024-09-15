@@ -8,22 +8,34 @@ import Error from "@/components/Error";
 import { DELETE_COURSE_MUTATION, GET_COURSE } from "@/lib/graphql/queries";
 import CourseDetailItem from "@/components/CourseDetailsItem";
 import { useQuery, useMutation } from "@apollo/client";
+import {
+  CourseQuery,
+  CourseQueryVariables,
+  DeleteCourseMutation,
+  DeleteCourseMutationVariables,
+} from "@/generated/graphql";
 
 export default function CourseDetails() {
   const params = useParams();
   const router = useRouter();
-  const { id } = params;
+  const id = params.id as string;
 
-  const { loading, data, error } = useQuery(GET_COURSE, {
-    variables: {
-      id,
-    },
-    fetchPolicy: "network-only",
-  });
+  const { loading, data, error } = useQuery<CourseQuery, CourseQueryVariables>(
+    GET_COURSE,
+    {
+      variables: {
+        id,
+      },
+      fetchPolicy: "network-only",
+    }
+  );
 
-  const [deleteCourse] = useMutation(DELETE_COURSE_MUTATION);
+  const [deleteCourse] = useMutation<
+    DeleteCourseMutation,
+    DeleteCourseMutationVariables
+  >(DELETE_COURSE_MUTATION);
 
-  const course = data?.course ?? {};
+  const course = data?.course;
 
   const handleDelete = async () => {
     await deleteCourse({
@@ -40,6 +52,10 @@ export default function CourseDetails() {
 
   if (error) {
     return <Error />;
+  }
+
+  if (!course) {
+    return <div>No course details found</div>;
   }
 
   return (

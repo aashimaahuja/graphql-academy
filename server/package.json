@@ -17,6 +17,7 @@
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@graphql-codegen/typescript-operations": "^4.2.3",
     "@tsconfig/node18": "^18.2.4",
     "nodemon": "^3.1.4",
     "tsx": "^4.19.1",

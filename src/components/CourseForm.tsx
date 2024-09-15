@@ -18,15 +18,28 @@ import { Course } from "@/types/Course";
 import { useRouter } from "next/navigation";
 import { CourseFormType } from "@/types/CourseForm";
 import { useMutation, useQuery } from "@apollo/client";
+import {
+  AddCourseMutation,
+  AddCourseMutationVariables,
+  InstructorsQuery,
+  UpdateCourseMutation,
+  UpdateCourseMutationVariables,
+} from "@/generated/graphql";
 
 interface CourseFormProps {
   initialCourseDetails?: Course;
 }
 
 export const CourseForm = ({ initialCourseDetails }: CourseFormProps) => {
-  const { data } = useQuery(GET_INSTRUCTORS);
-  const [addCourse] = useMutation(ADD_COURSE_MUTATION);
-  const [updateCourse] = useMutation(UPDATE_COURSE_MUTATION);
+  const { data } = useQuery<InstructorsQuery>(GET_INSTRUCTORS);
+  const [addCourse] = useMutation<
+    AddCourseMutation,
+    AddCourseMutationVariables
+  >(ADD_COURSE_MUTATION);
+  const [updateCourse] = useMutation<
+    UpdateCourseMutation,
+    UpdateCourseMutationVariables
+  >(UPDATE_COURSE_MUTATION);
 
   const router = useRouter();
 
