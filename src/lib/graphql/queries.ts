@@ -5,6 +5,22 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const courseDetailsFragment = gql`
+  fragment CourseDetail on Course {
+    id
+    title
+    description
+    duration
+    level
+    price
+    category
+    instructor {
+      id
+      name
+    }
+  }
+`;
+
 const GET_COURSES = gql`
   query Courses {
     courses {
@@ -18,19 +34,10 @@ const GET_COURSES = gql`
 const GET_COURSE = gql`
   query Course($id: ID!) {
     course(id: $id) {
-      id
-      title
-      description
-      duration
-      level
-      price
-      category
-      instructor {
-        id
-        name
-      }
+      ...CourseDetail
     }
   }
+  ${courseDetailsFragment}
 `;
 
 const GET_INSTRUCTORS = gql`
@@ -46,9 +53,10 @@ const GET_INSTRUCTORS = gql`
 const ADD_COURSE_MUTATION = gql`
   mutation AddCourse($input: addCourseInput!) {
     course: addCourse(input: $input) {
-      id
+      ...CourseDetail
     }
   }
+  ${courseDetailsFragment}
 `;
 
 const DELETE_COURSE_MUTATION = gql`
@@ -94,6 +102,13 @@ export const addCourse = async (course) => {
   const { data } = await apolloClient.mutate({
     mutation: ADD_COURSE_MUTATION,
     variables: { input: course },
+    update: (cache, { data }) => {
+      cache.writeQuery({
+        query: GET_COURSE,
+        variables: { id: data.course.id },
+        data,
+      });
+    },
   });
   return data.course;
 };
