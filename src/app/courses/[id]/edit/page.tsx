@@ -10,7 +10,7 @@ function EditCourse() {
   const { id } = params;
 
   const courseDetails = useMemo(() => {
-    return courses.find((course) => course.id === parseInt(id.toString()));
+    return courses.find((course) => course.id === id.toString());
   }, [id]);
 
   return <CourseForm initialCourseDetails={courseDetails} />;

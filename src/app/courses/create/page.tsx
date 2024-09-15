@@ -1,16 +1,18 @@
 import React from "react";
 import { CourseForm } from "@/components/CourseForm";
-import instructors from "@/mocks/instructors";
+import { Course } from "@/types/Course";
 
 function CreateCourse() {
-  const initialCourseDetails = {
+  const initialCourseDetails: Course = {
+    id: "",
     title: "",
     description: "",
-    instructor: instructors[0].id,
-    duration: "",
-    level: "",
-    price: "",
-    category: "",
+    level: "Beginner",
+    category: "Programming",
+    instructor: {
+      id: "",
+      name: "",
+    },
   };
 
   return <CourseForm initialCourseDetails={initialCourseDetails} />;

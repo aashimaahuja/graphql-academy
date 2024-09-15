@@ -14,7 +14,7 @@ export default function Courses() {
   return (
     <>
       <div className="flex justify-between mb-4">
-        <h2 className="font-semibold mb-4 text-xl">Courses</h2>
+        <h2 className="font-semibold mb-4 text-xl">Courses </h2>
         <Link href="/courses/create">
           <Button color="blue" className="flex">
             Add course

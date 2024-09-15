@@ -22,7 +22,13 @@ export const CourseForm = ({ initialCourseDetails }) => {
   const [form, setForm] = useState(initialCourseDetails);
 
   const onChange = (e) => {
-    setForm({ ...form, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+    if (id === "duration" || id === "price") {
+      setForm({ ...form, [id]: Number(e.target.value) });
+      return;
+    }
+
+    setForm({ ...form, [id]: value });
   };
 
   const onSubmit = (e) => {
@@ -67,7 +73,11 @@ export const CourseForm = ({ initialCourseDetails }) => {
             <div className="mb-2 block">
               <Label htmlFor="instructor" value="Instructor" />
             </div>
-            <Select id="instructor" value={form.instructor} onChange={onChange}>
+            <Select
+              id="instructorId"
+              value={form.instructorId}
+              onChange={onChange}
+            >
               {instructorOptions.map((instructor) => (
                 <option key={instructor.value} value={instructor.value}>
                   {instructor.label}
@@ -84,6 +94,18 @@ export const CourseForm = ({ initialCourseDetails }) => {
               id="duration"
               type="number"
               value={form.duration}
+              onChange={onChange}
+            />
+          </div>
+
+          <div>
+            <div className="mb-2 block">
+              <Label htmlFor="price" value="Price" />
+            </div>
+            <TextInput
+              id="price"
+              type="number"
+              value={form.price}
               onChange={onChange}
             />
           </div>
