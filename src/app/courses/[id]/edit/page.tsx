@@ -2,33 +2,24 @@
 
 import { CourseForm } from "@/components/CourseForm";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { getCourse } from "@/lib/graphql/queries";
-import { Course } from "@/types/Course";
 import Error from "@/components/Error";
+import { GET_COURSE } from "@/lib/graphql/queries";
+import { useQuery } from "@apollo/client";
 
 function EditCourse() {
   const params = useParams();
   const { id } = params;
-  const [courseDetails, setCourseDetails] = useState<Course>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState();
 
-  useEffect(() => {
-    getCourse(id.toString())
-      .then(setCourseDetails)
-      .catch(setError)
-      .finally(() => setIsLoading(false));
-  }, []);
+  const { data, loading, error } = useQuery(GET_COURSE, { variables: { id } });
 
-  if (isLoading) {
+  if (loading) {
     return <div>Loading...</div>;
   }
   if (error) {
     return <Error />;
   }
 
-  return <CourseForm initialCourseDetails={courseDetails} />;
+  return <CourseForm initialCourseDetails={data.course} />;
 }
 
 export default EditCourse;

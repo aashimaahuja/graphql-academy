@@ -9,17 +9,25 @@ import {
   TextInput,
 } from "flowbite-react";
 import { useEffect, useMemo, useState } from "react";
-import { addCourse, getInstructors, updateCourse } from "@/lib/graphql/queries";
+import {
+  ADD_COURSE_MUTATION,
+  GET_INSTRUCTORS,
+  UPDATE_COURSE_MUTATION,
+} from "@/lib/graphql/queries";
 import { Course } from "@/types/Course";
 import { useRouter } from "next/navigation";
 import { CourseFormType } from "@/types/CourseForm";
+import { useMutation, useQuery } from "@apollo/client";
 
 interface CourseFormProps {
   initialCourseDetails?: Course;
 }
 
 export const CourseForm = ({ initialCourseDetails }: CourseFormProps) => {
-  const [instructors, setInstructors] = useState([]);
+  const { data } = useQuery(GET_INSTRUCTORS);
+  const [addCourse] = useMutation(ADD_COURSE_MUTATION);
+  const [updateCourse] = useMutation(UPDATE_COURSE_MUTATION);
+
   const router = useRouter();
 
   const [form, setForm] = useState<CourseFormType>({
@@ -33,21 +41,18 @@ export const CourseForm = ({ initialCourseDetails }: CourseFormProps) => {
   });
 
   useEffect(() => {
-    getInstructors().then((instructors) => {
-      setInstructors(instructors);
-      setForm({
-        ...form,
-        instructorId: form.instructorId ?? instructors[0].id,
-      });
+    setForm({
+      ...form,
+      instructorId: form.instructorId || data?.instructors[0].id,
     });
-  }, []);
+  }, [data]);
 
   const instructorOptions = useMemo(() => {
-    return instructors.map((instructor) => ({
+    return data?.instructors.map((instructor) => ({
       value: instructor.id,
       label: instructor.name,
     }));
-  }, [instructors]);
+  }, [data]);
 
   const onChange = (e) => {
     const { id, value } = e.target;
@@ -59,15 +64,32 @@ export const CourseForm = ({ initialCourseDetails }: CourseFormProps) => {
     setForm({ ...form, [id]: value });
   };
 
-  const onSubmit = async (e) => {
+  const handleAddCourse = async () => {
+    const { data } = await addCourse({
+      variables: {
+        input: form,
+      },
+    });
+    router.push(`/courses/${data.course.id}`);
+  };
+
+  const handleEditCourse = async () => {
+    const { data } = await updateCourse({
+      variables: {
+        id: initialCourseDetails.id,
+        input: form,
+      },
+    });
+    router.push(`/courses/${data.course.id}`);
+  };
+
+  const onSubmit = (e) => {
     e.preventDefault();
     if (initialCourseDetails.id) {
-      const data = await updateCourse(initialCourseDetails.id, form);
-      router.push(`/courses/${data.id}`);
+      handleEditCourse();
       return;
     }
-    const data = await addCourse(form);
-    router.push(`/courses/${data.id}`);
+    handleAddCourse();
   };
 
   return (
@@ -112,7 +134,7 @@ export const CourseForm = ({ initialCourseDetails }: CourseFormProps) => {
               value={form.instructorId}
               onChange={onChange}
             >
-              {instructorOptions.map((instructor) => (
+              {instructorOptions?.map((instructor) => (
                 <option key={instructor.value} value={instructor.value}>
                   {instructor.label}
                 </option>

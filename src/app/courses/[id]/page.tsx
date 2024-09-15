@@ -1,37 +1,36 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Card, Button } from "flowbite-react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Error from "@/components/Error";
-import { deleteCourse, getCourse } from "@/lib/graphql/queries";
-import { Course } from "@/types/Course";
+import { DELETE_COURSE_MUTATION, GET_COURSE } from "@/lib/graphql/queries";
 import CourseDetailItem from "@/components/CourseDetailsItem";
+import { useQuery, useMutation } from "@apollo/client";
 
 export default function CourseDetails() {
   const params = useParams();
   const router = useRouter();
   const { id } = params;
-  const [course, setCourse] = useState<Course>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    getCourse(id.toString())
-      .then((course) => {
-        setCourse(course);
-      })
-      .catch((error) => {
-        setError(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [id]);
+  const { loading, data, error } = useQuery(GET_COURSE, {
+    variables: {
+      id,
+    },
+    fetchPolicy: "network-only",
+  });
+
+  const [deleteCourse] = useMutation(DELETE_COURSE_MUTATION);
+
+  const course = data?.course ?? {};
 
   const handleDelete = async () => {
-    await deleteCourse(id);
+    await deleteCourse({
+      variables: {
+        id,
+      },
+    });
     router.push("/courses");
   };
 

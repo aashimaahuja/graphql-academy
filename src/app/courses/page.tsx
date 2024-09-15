@@ -1,29 +1,18 @@
 "use client";
 
-import { getCourses } from "@/lib/graphql/queries";
+import { CoursesQuery } from "@/generated/graphql";
+import { GET_COURSES } from "@/lib/graphql/queries";
+import { useQuery } from "@apollo/client";
 import { Button, ListGroup } from "flowbite-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function Courses() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState();
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const coursesData = await getCourses();
-        setCourses(coursesData);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+  const { loading, data, error } = useQuery(GET_COURSES, {
+    fetchPolicy: "network-only",
+  });
+  const courses = data?.courses ?? [];
 
   if (loading) {
     return <div>Loading...</div>;
