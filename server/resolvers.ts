@@ -44,8 +44,8 @@ export const resolvers = {
   },
 
   Course: {
-    instructor: (course, _args, { instructorLoader }) => {
-      return instructorLoader.load(course.instructorId);
+    instructor: (course, _args) => {
+      return getInstructor(course.instructorId);
     },
   },
   Instructor: {
