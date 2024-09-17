@@ -4,7 +4,7 @@ Implement API layer of this project
 
 ### PreRequisites
 
-- Clone git repo
+- Clone git repo https://github.com/aashimaahuja/graphql-academy
 - Install extension SQLite viewer
 - Markdown preview enhanced
 
