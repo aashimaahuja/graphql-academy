@@ -32,7 +32,17 @@ export const GET_COURSES = gql(`
 const { loading, data, error } = useQuery<CoursesQuery>(GET_COURSES);
 ```
 
-4. Turn off fragment masking
+4. Turn off typename while generating type
+
+codegen.json
+
+```js
+"config": {
+    "skipTypename": true
+  }
+```
+
+5. Turn off fragment masking
 
 codegen.json
 
@@ -50,11 +60,21 @@ npm i -D @0no-co/graphqlsp
 
 ```
 
-Add in tsconfig.json
+Add in tsconfig.json plugins
 
 ```js
 {
     "name": "@0no-co/graphqlsp",
     "schema": "./server/schema.graphql"
 }
+```
+
+Add in vscode settings.json
+
+```js
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
+}
+
 ```
