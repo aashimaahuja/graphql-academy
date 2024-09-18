@@ -81,3 +81,24 @@ const { data } = await apolloClient.mutate({
   },
 });
 ```
+
+### Authorisation
+
+```js
+const httpLink = createHttpLink({ uri: "http://localhost:9000/graphql" });
+
+const authLink = new ApolloLink((operation, forward) => {
+  const accessToken = getAccessToken();
+  if (accessToken) {
+    operation.setContext({
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  }
+  return forward(operation);
+});
+
+const apolloClient = new ApolloClient({
+  link: concat(authLink, httpLink),
+  cache: new InMemoryCache(),
+});
+```
